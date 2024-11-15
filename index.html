@@ -3,156 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comptes Rendus CVL</title>
+    <title>Comptes Rendus MDL</title>
     <style>
+        /* Global Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9fafc;
             margin: 0;
             padding: 0;
-            padding-top: 60px; /* Ajoute un padding pour éviter que les éléments soient cachés en haut */
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Aligne les éléments en haut */
-            min-height: 100vh;
-            transition: background-color 0.3s ease;
-        }
-
-        .dark-mode {
-            background-color: #2c2c2c;
-            color: white;
-        }
-
-        .container {
-            width: 80%;
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #333;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .dark-mode .container {
-            background-color: #3a3a3a;
-            color: white;
+        .dark-mode {
+            background-color: #1e1e2f;
+            color: #e0e0e0;
         }
 
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .dark-mode .container {
+            background: #2b2b3d;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Header */
         h1 {
             text-align: center;
-            color: #333;
-            transition: color 0.3s ease;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #007BFF;
         }
 
         .dark-mode h1 {
-            color: white;
+            color: #4fc3f7;
         }
 
+        /* Search and Filters */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search,
+        select {
+            flex: 1 1 45%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.2s ease;
+        }
+
+        .search:focus,
+        select:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        /* Buttons */
+        .toggle-dark-mode {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1rem;
+            background: #007BFF;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .toggle-dark-mode:hover {
+            background: #0056b3;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dark-mode .toggle-dark-mode {
+            background: #4fc3f7;
+            color: #1e1e2f;
+        }
+
+        /* File List */
         ul {
             list-style: none;
             padding: 0;
         }
 
         ul li {
-            margin: 10px 0;
-            background-color: #007BFF;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #007BFF;
+            color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        ul li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
         ul li a {
-            display: block;
-            padding: 15px;
-            color: white;
             text-decoration: none;
-            font-size: 18px;
-            transition: background-color 0.3s ease;
+            color: inherit;
+            font-size: 1.1rem;
+            flex: 1;
         }
 
-        ul li a:hover {
-            background-color: #0056b3;
-        }
-
-        .dark-mode ul li a {
-            background-color: #505050;
-        }
-
-        .dark-mode ul li a:hover {
-            background-color: #707070;
-        }
-
+        /* Viewer */
         .viewer {
             margin-top: 20px;
-            text-align: center;
-            display: none; /* Cacher la visionneuse PDF au début */
+            display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         iframe {
             width: 100%;
             height: 80vh;
             border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .visible {
-            display: block; /* Affiche l'iframe lorsque le fichier PDF est chargé */
-        }
-
-        .search {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .filter {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .calendar {
-            margin-top: 20px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                width: 95%;
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
 
-        /* Calendrier */
-        .calendar iframe {
-            width: 100%;
-            height: 600px; /* Ajuster la hauteur pour rendre le calendrier visible */
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .filter-container {
+                flex-direction: column;
+            }
 
-        .toggle-dark-mode {
-            padding: 10px 15px;
-            margin-bottom: 15px;
-            cursor: pointer;
-            border: none;
-            background-color: #007BFF;
-            color: white;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+            .search,
+            select {
+                flex: 1 1 auto;
+            }
 
-        .dark-mode .toggle-dark-mode {
-            background-color: #505050;
-        }
-
-        .dark-mode .toggle-dark-mode:hover {
-            background-color: #707070;
+            ul li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Comptes Rendus MDL</h1>
-        <input type="text" class="search" id="search" placeholder="Rechercher un compte rendu (ex : Octobre 2024)">
-        <div class="filter">
-            <label for="filter-month">Filtrer par mois :</label>
+        <div class="filter-container">
+            <input type="text" class="search" id="search" placeholder="Rechercher un compte rendu...">
             <select id="filter-month">
                 <option value="">Tous les mois</option>
                 <option value="octobre">Octobre</option>
@@ -170,14 +193,14 @@
             <!-- Les fichiers seront listés ici -->
         </ul>
         <div class="viewer" id="viewer">
-            <iframe id="pdf-viewer"></iframe> <!-- Le fichier PDF s'affichera ici -->
+            <iframe id="file-viewer"></iframe>
         </div>
     </div>
 
     <script>
         const fileList = document.getElementById('file-list');
         const viewer = document.getElementById('viewer');
-        const pdfViewer = document.getElementById('pdf-viewer');
+        const fileViewer = document.getElementById('file-viewer');
         const searchInput = document.getElementById('search');
         const filterMonth = document.getElementById('filter-month');
         const filterYear = document.getElementById('filter-year');
@@ -185,30 +208,29 @@
         let darkMode = false;
         let files = [];
 
-        // Fonction pour charger les fichiers PDF dynamiquement via l'API GitHub
+        // Fonction pour charger les fichiers depuis GitHub pour MDL
         async function loadFilesFromGithub() {
-            const repoOwner = 'Lost-Cyrano'; // Ton nom d'utilisateur GitHub
-            const repoName = 'MDL-comptes_rendus'; // Nom de ton dépôt
-            const directory = ''; // Branche principale
-            const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${directory}`;
+            const repoPath = "MDL";
+            const apiUrl = `https://api.github.com/repos/Lost-Cyrano/comptes_rendus/contents/${repoPath}`;
 
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
                 data.forEach(file => {
-                    if (file.name.endsWith('.pdf')) {
+                    if (file.type === "file") {
+                        const date = parseDateFromFilename(file.name);
                         files.push({
                             name: file.name,
-                            date: parseDateFromFilename(file.name),
-                            url: `https://docs.google.com/gview?url=https://raw.githubusercontent.com/${repoOwner}/${repoName}/main/${file.name}&embedded=true`
+                            url: file.download_url,
+                            date: date
                         });
                     }
                 });
 
                 renderFileList(files);
             } catch (error) {
-                console.error('Erreur lors de la récupération des fichiers:', error);
+                console.error(`Erreur lors de la récupération des fichiers MDL:`, error);
             }
         }
 
@@ -222,62 +244,56 @@
         }
 
         // Fonction pour afficher la liste des fichiers
-        function renderFileList(files) {
+        function renderFileList(fileArray) {
             fileList.innerHTML = '';
-            files.forEach(file => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = '#';
+            fileArray.forEach(file => {
+                const li = document.createElement("li");
+                const a = document.createElement("a");
                 a.textContent = file.name;
-                a.onclick = () => {
-                    pdfViewer.src = file.url; // Charge le PDF dans l'iframe
-                    viewer.style.display = 'block'; // Affiche la visionneuse PDF après avoir cliqué sur un lien
-                };
+                a.href = "#";
+                a.addEventListener("click", () => {
+                    fileViewer.src = `https://docs.google.com/gview?url=${file.url}&embedded=true`;
+                    viewer.style.display = "block";
+                });
                 li.appendChild(a);
                 fileList.appendChild(li);
             });
         }
 
         // Rechercher et filtrer
-        searchInput.addEventListener('input', function () {
+        function applyFilters() {
             const searchTerm = searchInput.value.toLowerCase();
-            const filteredFiles = files.filter(file => file.name.toLowerCase().includes(searchTerm));
-            renderFileList(filteredFiles);
-        });
-
-        filterMonth.addEventListener('change', function () {
             const selectedMonth = filterMonth.value.toLowerCase();
             const selectedYear = filterYear.value;
+
             const filteredFiles = files.filter(file => {
-                const fileMonth = file.date.toLocaleString('fr-FR', { month: 'long' }).toLowerCase();
-                const fileYear = file.date.getFullYear().toString();
-                return (!selectedMonth || fileMonth === selectedMonth) && (!selectedYear || fileYear === selectedYear);
+                const fileName = file.name.toLowerCase();
+                const fileMonth = file.date
+                    ? file.date.toLocaleString('fr-FR', { month: 'long' }).toLowerCase()
+                    : '';
+                const fileYear = file.date ? file.date.getFullYear().toString() : '';
+
+                return (
+                    (!selectedMonth || fileMonth === selectedMonth) &&
+                    (!selectedYear || fileYear === selectedYear) &&
+                    fileName.includes(searchTerm)
+                );
             });
+
             renderFileList(filteredFiles);
-        });
+        }
 
-        filterYear.addEventListener('change', function () {
-            filterMonth.dispatchEvent(new Event('change')); // Pour réappliquer le filtre combiné mois + année
-        });
+        searchInput.addEventListener('input', applyFilters);
+        filterMonth.addEventListener('change', applyFilters);
+        filterYear.addEventListener('change', applyFilters);
 
-        // Toggle mode sombre
-        toggleDarkModeBtn.addEventListener('click', () => {
+        // Basculer en mode sombre
+        toggleDarkModeBtn.addEventListener("click", () => {
             darkMode = !darkMode;
-            document.body.classList.toggle('dark-mode', darkMode);
+            document.body.classList.toggle("dark-mode", darkMode);
         });
 
-        // Lazy loading (chargement différé)
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const iframe = entry.target;
-                    iframe.src = iframe.dataset.src;
-                    observer.unobserve(iframe);
-                }
-            });
-        });
-
-        // Charger les fichiers au chargement de la page
+        // Charger les fichiers au démarrage
         loadFilesFromGithub();
     </script>
 </body>
